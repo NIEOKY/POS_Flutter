@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -62,7 +60,7 @@ class _BotonState extends State<Boton> {
           style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35),
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
             backgroundColor:
@@ -105,7 +103,7 @@ class _EspacioDeTextoState extends State<EspacioDeTexto> {
       child: Material(
         elevation: 5,
         shadowColor: Colors.black,
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(20),
         child: Theme(
           data: ThemeData(
             colorScheme:
@@ -124,11 +122,11 @@ class _EspacioDeTextoState extends State<EspacioDeTexto> {
               hintText: widget.texto,
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: widget.color!),
-                borderRadius: BorderRadius.circular(35),
+                borderRadius: BorderRadius.circular(20),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: colorprimario),
-                borderRadius: BorderRadius.circular(35),
+                borderRadius: BorderRadius.circular(20),
               ),
               labelStyle: const TextStyle(
                 color: colortexto,
@@ -138,7 +136,7 @@ class _EspacioDeTextoState extends State<EspacioDeTexto> {
                 maxWidth: 300,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(35),
+                borderRadius: BorderRadius.circular(20),
                 borderSide: BorderSide(
                   color: widget.color!,
                   width: 2,
@@ -198,34 +196,35 @@ class _SidebarState extends State<Sidebar> {
               borderRadius: BorderRadius.all(Radius.circular(25))),
           child: ListView(children: [
             Padding(
-              padding: EdgeInsets.only(bottom: height! * 0.08),
-              child: CircleAvatar(
-                  backgroundColor: colorterciario,
-                  radius: 60,
-                  child: Icon(
-                    Icons.person,
-                    size: 100,
-                    color: colorprimario,
-                  )),
-            ),
+                padding: EdgeInsets.only(bottom: height! * 0.08),
+                child: (CircleAvatar(
+                    backgroundColor: colorterciario,
+                    radius: 60,
+                    child: Icon(
+                      Icons.person,
+                      size: 100,
+                      color: colorprimario,
+                    )))),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child:
                   Boton.icono("Resumen", () {}, 300, 50, 30, null, Icons.home),
             ),
-            SizedBox(height: 0.08 * height),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Boton.icono(
                   "Cuenta", () {}, 300, 50, 30, null, Icons.shopping_cart),
             ),
-            SizedBox(height: 0.08 * height),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Boton.icono(
                   "Inventario", () {}, 300, 50, 30, null, Icons.inventory),
             ),
-            SizedBox(height: 0.08 * height),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Boton.icono(
+                  "ventas", () {}, 300, 50, 30, null, Icons.sell_rounded),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Boton.icono("CerrarSesion", () {
@@ -243,7 +242,9 @@ class ItemInventario extends StatefulWidget {
   String? nombre;
   int? cantidad;
   double? precio;
-  ItemInventario(this.nombre, this.cantidad, this.precio, {Key? key})
+  Function? onPressed;
+  ItemInventario(this.nombre, this.cantidad, this.precio, this.onPressed,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -253,29 +254,35 @@ class ItemInventario extends StatefulWidget {
 class _ItemInventarioState extends State<ItemInventario> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Expanded(
+          flex: 3,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 40),
+            child: Expanded(
+              child: Texto('${widget.nombre}', 20),
+              flex: 1,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Texto('${widget.cantidad}', 20),
+          flex: 1,
+        ),
+        Expanded(
+          child: Texto('\$ ${widget.precio}', 20),
+          flex: 1,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 80, left: 20),
-              child: Texto('${widget.nombre}', 20),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 70),
-              child: Texto('${widget.cantidad}', 20),
-            ),
-            Texto('\$ ${widget.precio}', 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 200),
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.remove_circle_outline),
-                color: Colors.red,
-                iconSize: 40,
-              ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.remove_circle_outline),
+              color: Colors.red,
+              iconSize: 40,
             ),
             Container(
               width: 100,
@@ -302,7 +309,7 @@ class _ItemInventarioState extends State<ItemInventario> {
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

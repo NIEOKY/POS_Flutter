@@ -14,9 +14,18 @@ class InventoryScreen extends StatefulWidget {
 
 class _InventoryScreenState extends State<InventoryScreen> {
   @override
-  List<String> nombres = <String>["Producto 1", "Producto 2", "Producto 3"];
-  List<int> cantidades = <int>[1, 2, 3];
-  List<double> precio = <double>[1.4, 2.1, 3.5];
+  List<String> nombres = <String>[
+    "Producto 1",
+    "Producto 2",
+    "Producto 3",
+    '4',
+    '5',
+    '76',
+    '7',
+    '8'
+  ];
+  List<int> cantidades = <int>[1, 2, 3, 4, 5, 6, 7, 8];
+  List<double> precio = <double>[1, 2, 3, 4, 5, 6, 7, 8];
 
   Widget build(BuildContext context) {
     final double? wid = MediaQuery.of(context).size.width;
@@ -60,17 +69,24 @@ class _InventoryScreenState extends State<InventoryScreen> {
             SizedBox(height: 20),
             Container(
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 100, left: 20),
-                      child: Texto("Nombre", 30),
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 40),
+                        child: Texto("Nombre", 20),
+                      ),
                     ),
-                    Texto("Cantidad", 30),
-                    Texto("Precio", 30),
-                    SizedBox(width: 60),
-                    SizedBox(width: 400),
-                    SizedBox(width: 60),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 40),
+                        child: Texto("Cantidad", 20),
+                      ),
+                    ),
+                    Expanded(flex: 1, child: Texto("Precio", 20)),
+                    SizedBox(width: 200),
                   ]),
             ),
             Expanded(
@@ -83,6 +99,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       nombres[index],
                       cantidades[index],
                       precio[index],
+                      () {},
                     ),
                   );
                 },
