@@ -11,22 +11,21 @@ class CuentaScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-        alignment: Alignment.center,
-        color: colorprimario,
-        child: Row(
-          children: [
-            Expanded(
-                flex: 2,
-                child: Container(
-                  color: colorprimario,
-                )),
-            Expanded(
-                flex: 1,
-                child: Container(
-                  color: colorsecundario,
-                ))
-          ],
-        ));
+    return Scaffold(
+        body: Row(
+      children: [
+        Expanded(
+            flex: 2,
+            child: Container(
+              color: Colors.black12,
+              child: CuentaItem(),
+            )),
+        Expanded(
+            flex: 1,
+            child: Container(
+              color: colorsecundario,
+            ))
+      ],
+    ));
   }
 }

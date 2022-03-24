@@ -17,9 +17,7 @@ class Texto extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: textsize,
-        fontWeight: FontWeight.bold,
-      ),
+          fontSize: textsize, fontWeight: FontWeight.bold, color: colortexto),
       softWrap: false,
     );
   }
@@ -202,53 +200,77 @@ class Sidebar extends ConsumerWidget {
           child: Column(children: [
             Flexible(
               flex: 1,
-              child: CircleAvatar(
-                  backgroundColor: colorterciario,
-                  radius: 60,
-                  child: Icon(
-                    Icons.person,
-                    size: 100,
-                    color: colorprimario,
-                  )),
+              child: FittedBox(
+                child: CircleAvatar(
+                    backgroundColor: colorterciario,
+                    radius: 60,
+                    child: Icon(
+                      Icons.person,
+                      size: 100,
+                      color: colorprimario,
+                    )),
+              ),
             ),
-            SizedBox(height: 80),
+            SizedBox(
+              height: height! * 0.05,
+            ),
             Flexible(
               flex: 1,
-              child: Boton.icono("Resumen", () {
-                ref.read(indexprovider.notifier).state = 0;
-              }, 300, 80, 30, null, Icons.home),
+              child: FittedBox(
+                child: Boton.icono("Resumen", () {
+                  ref.read(indexprovider.notifier).state = 0;
+                }, 300, 80, 40, null, Icons.home),
+              ),
             ),
-            SizedBox(height: 40),
+            SizedBox(
+              height: height! * 0.05,
+            ),
             Flexible(
               flex: 1,
-              child: Boton.icono("Cuenta", () {
-                ref.read(indexprovider.notifier).state = 1;
-              }, 300, 80, 30, null, Icons.shopping_cart),
+              child: FittedBox(
+                child: Boton.icono("Cuenta", () {
+                  ref.read(indexprovider.notifier).state = 1;
+                }, 300, 80, 40, null, Icons.shopping_cart),
+              ),
             ),
-            SizedBox(height: 40),
+            SizedBox(
+              height: height! * 0.05,
+            ),
             Flexible(
               flex: 1,
-              child: Boton.icono("Inventario", () {
-                ref.read(indexprovider.notifier).state = 2;
-              }, 300, 80, 30, null, Icons.inventory),
+              child: FittedBox(
+                child: Boton.icono("Inventario", () {
+                  ref.read(indexprovider.notifier).state = 2;
+                }, 300, 80, 40, null, Icons.inventory),
+              ),
             ),
-            SizedBox(height: 40),
+            SizedBox(
+              height: height! * 0.05,
+            ),
             Flexible(
               flex: 1,
-              child: Boton.icono("ventas", () {
-                ref.read(indexprovider.notifier).state = 3;
-              }, 300, 80, 30, null, Icons.sell_rounded),
+              child: FittedBox(
+                child: Boton.icono("ventas", () {
+                  ref.read(indexprovider.notifier).state = 3;
+                }, 300, 80, 40, null, Icons.sell_rounded),
+              ),
             ),
-            SizedBox(height: 200),
+            SizedBox(
+              height: height! * 0.2,
+            ),
             Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  right: 8,
+              flex: 1,
+              child: FittedBox(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    right: 8,
+                  ),
+                  child: Boton.icono("CerrarSesion", () {
+                    Navigator.pop(context);
+                  }, 180, 80, 18, Color.fromARGB(255, 146, 19, 3),
+                      Icons.logout),
                 ),
-                child: Boton.icono("CerrarSesion", () {
-                  Navigator.pop(context);
-                }, 180, 80, 18, Color.fromARGB(255, 146, 19, 3), Icons.logout),
               ),
             )
           ]),
@@ -350,6 +372,100 @@ class _ItemInventarioState extends State<ItemInventario> {
               ),
             ]),
       ),
+    );
+  }
+}
+
+class CuentaItem extends ConsumerWidget {
+  const CuentaItem({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return GridView.count(
+      crossAxisSpacing: 1,
+      mainAxisSpacing: 2,
+      crossAxisCount: 4,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.all(20),
+          child: Expanded(
+            child: ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  shadowColor:
+                      MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0)),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent),
+                ),
+                child: Stack(children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                      padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: Text('Pollo',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: colortexto,
+                                    fontSize: 20,
+                                  )),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(child: Texto('400', 20)),
+                                  Expanded(child: Texto('\$250', 20)),
+                                ],
+                              ),
+                            ),
+                          ]),
+                    ),
+                  ),
+                  Image.asset('assets/Pollo.png'),
+                ])
+                /* child: Column(
+                children: [
+                  Expanded(
+                      flex: 4,
+                      child: Container(child: Image.asset('assets/Pollo.png'))),
+                  Expanded(
+                    child: Container(
+                      color: colorfondo,
+                      child: Text('Pollo',
+                          style: TextStyle(
+                            color: colortexto,
+                            fontSize: 20,
+                          )),
+                    ),
+                  ),
+                  Expanded(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(child: Texto('400', 20)),
+                      Expanded(child: Texto('\$250', 20)),
+                    ],
+                  )),
+                ],
+              ),*/
+                ),
+          ),
+        ),
+      ],
     );
   }
 }
