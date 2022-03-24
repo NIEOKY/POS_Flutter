@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/screens/start_screen.dart';
+import 'package:point_of_sale/Provider.dart';
 
 class Texto extends StatelessWidget {
   final double textsize;
@@ -172,64 +174,82 @@ class _IconBotonState extends State<IconBoton> {
   }
 }
 
-class Sidebar extends StatefulWidget {
-  Sidebar({Key? key}) : super(key: key);
+class Sidebar extends ConsumerWidget {
+  const Sidebar({Key? key}) : super(key: key);
 
   @override
-  State<Sidebar> createState() => _SidebarState();
-}
-
-class _SidebarState extends State<Sidebar> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final index = ref.watch(indexprovider);
     //calculate the height of the screen
     final double? height = MediaQuery.of(context).size.height;
-    return Container(
-      width: 250,
-      height: height,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Drawer(
-          backgroundColor: colorfondo,
-          elevation: 20,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(25))),
-          child: ListView(children: [
-            Padding(
-                padding: EdgeInsets.only(bottom: height! * 0.08),
-                child: (CircleAvatar(
-                    backgroundColor: colorterciario,
-                    radius: 60,
-                    child: Icon(
-                      Icons.person,
-                      size: 100,
-                      color: colorprimario,
-                    )))),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child:
-                  Boton.icono("Resumen", () {}, 300, 50, 30, null, Icons.home),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorfondo,
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromARGB(78, 0, 0, 0),
+              blurRadius: 4,
+              spreadRadius: 2,
+              offset: Offset(0, 0),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Boton.icono(
-                  "Cuenta", () {}, 300, 50, 30, null, Icons.shopping_cart),
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            Flexible(
+              flex: 1,
+              child: CircleAvatar(
+                  backgroundColor: colorterciario,
+                  radius: 60,
+                  child: Icon(
+                    Icons.person,
+                    size: 100,
+                    color: colorprimario,
+                  )),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Boton.icono(
-                  "Inventario", () {}, 300, 50, 30, null, Icons.inventory),
+            SizedBox(height: 80),
+            Flexible(
+              flex: 1,
+              child: Boton.icono("Resumen", () {
+                ref.read(indexprovider.notifier).state = 0;
+              }, 300, 80, 30, null, Icons.home),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Boton.icono(
-                  "ventas", () {}, 300, 50, 30, null, Icons.sell_rounded),
+            SizedBox(height: 40),
+            Flexible(
+              flex: 1,
+              child: Boton.icono("Cuenta", () {
+                ref.read(indexprovider.notifier).state = 1;
+              }, 300, 80, 30, null, Icons.shopping_cart),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Boton.icono("CerrarSesion", () {
-                Navigator.pop(context);
-              }, 180, 50, 18, Color.fromARGB(255, 146, 19, 3), Icons.logout),
+            SizedBox(height: 40),
+            Flexible(
+              flex: 1,
+              child: Boton.icono("Inventario", () {
+                ref.read(indexprovider.notifier).state = 2;
+              }, 300, 80, 30, null, Icons.inventory),
+            ),
+            SizedBox(height: 40),
+            Flexible(
+              flex: 1,
+              child: Boton.icono("ventas", () {
+                ref.read(indexprovider.notifier).state = 3;
+              }, 300, 80, 30, null, Icons.sell_rounded),
+            ),
+            SizedBox(height: 200),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 8,
+                  right: 8,
+                ),
+                child: Boton.icono("CerrarSesion", () {
+                  Navigator.pop(context);
+                }, 180, 80, 18, Color.fromARGB(255, 146, 19, 3), Icons.logout),
+              ),
             )
           ]),
         ),
@@ -254,63 +274,82 @@ class ItemInventario extends StatefulWidget {
 class _ItemInventarioState extends State<ItemInventario> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 3,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 40),
-            child: Expanded(
-              child: Texto('${widget.nombre}', 20),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 40),
+                child: Expanded(
+                  child: Texto('${widget.nombre}', 20),
+                  flex: 1,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Texto('${widget.cantidad}', 20),
               flex: 1,
             ),
-          ),
-        ),
-        Expanded(
-          child: Texto('${widget.cantidad}', 20),
-          flex: 1,
-        ),
-        Expanded(
-          child: Texto('\$ ${widget.precio}', 20),
-          flex: 1,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.remove_circle_outline),
-              color: Colors.red,
-              iconSize: 40,
+            Expanded(
+              child: Texto('\$ ${widget.precio}', 20),
+              flex: 1,
             ),
-            Container(
-              width: 100,
-              height: 80,
-              child: TextField(
-                style: TextStyle(
-                  color: colortexto,
-                  fontSize: 20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.remove_circle_outline),
+                  color: Colors.red,
+                  iconSize: 40,
                 ),
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                Container(
+                  width: 100,
+                  height: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: TextField(
+                      style: TextStyle(
+                        color: colortexto,
+                        fontSize: 20,
+                      ),
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Icon(
-                Icons.add_circle_outline_rounded,
-                size: 40,
-                color: Colors.green[900],
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Icon(
+                    Icons.add_circle_outline_rounded,
+                    size: 40,
+                    color: Colors.green[900],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ],
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: colorItem,
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(71, 0, 0, 0),
+                blurRadius: 2,
+                spreadRadius: 1,
+                offset: Offset(2, 2),
+              ),
+            ]),
+      ),
     );
   }
 }

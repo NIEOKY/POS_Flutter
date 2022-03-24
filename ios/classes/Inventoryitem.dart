@@ -4,5 +4,4 @@ class InventarioItem {
   double? precio;
   Function? onPressed;
   InventarioItem(this.cantidad, this.nombre, this.precio, this.onPressed);
-  
 }

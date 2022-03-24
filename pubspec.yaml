@@ -36,6 +36,7 @@ dependencies:
   flutter_svg: ^1.0.3
   get: ^4.6.1
   riverpod: ^1.0.3
+  flutter_riverpod: ^1.0.3
 
 dev_dependencies:
   flutter_test:

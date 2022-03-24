@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/screens/start_screen.dart';
 import 'screens/start_screen.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
