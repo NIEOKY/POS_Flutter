@@ -36,6 +36,7 @@ dependencies:
   flutter_svg: ^1.0.3
   get: ^4.6.1
   flutter_riverpod: ^1.0.3
+  responsive_grid: ^2.0.0
 
 
 dev_dependencies:

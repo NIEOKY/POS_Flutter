@@ -67,7 +67,7 @@ class InventoryScreen extends ConsumerWidget {
           ),
           SizedBox(height: 20),
           Expanded(
-            flex: 5,
+            flex: 6,
             child: Container(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -76,7 +76,7 @@ class InventoryScreen extends ConsumerWidget {
                       flex: 3,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 40),
-                        child: Texto("asdas", 20),
+                        child: Texto("Nombre", 20),
                       ),
                     ),
                     Expanded(

@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/screens/start_screen.dart';
 import 'package:point_of_sale/Provider.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 class Texto extends StatelessWidget {
   final double textsize;
@@ -223,7 +224,7 @@ class Sidebar extends ConsumerWidget {
               ),
             ),
             SizedBox(
-              height: height! * 0.05,
+              height: height * 0.05,
             ),
             Flexible(
               flex: 1,
@@ -234,7 +235,7 @@ class Sidebar extends ConsumerWidget {
               ),
             ),
             SizedBox(
-              height: height! * 0.05,
+              height: height * 0.05,
             ),
             Flexible(
               flex: 1,
@@ -245,7 +246,7 @@ class Sidebar extends ConsumerWidget {
               ),
             ),
             SizedBox(
-              height: height! * 0.05,
+              height: height * 0.05,
             ),
             Flexible(
               flex: 1,
@@ -256,7 +257,7 @@ class Sidebar extends ConsumerWidget {
               ),
             ),
             SizedBox(
-              height: height! * 0.2,
+              height: height * 0.2,
             ),
             Flexible(
               flex: 1,
@@ -381,91 +382,57 @@ class CuentaItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    return GridView.count(
-      crossAxisSpacing: 1,
-      mainAxisSpacing: 2,
-      crossAxisCount: 4,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(20),
-          child: Expanded(
-            child: ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  shadowColor:
-                      MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0)),
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent),
-                ),
-                child: Stack(children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                      padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Expanded(
-                              child: Text('Pollo',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: colortexto,
-                                    fontSize: 20,
-                                  )),
-                            ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Expanded(child: Texto('400', 20)),
-                                  Expanded(child: Texto('\$250', 20)),
-                                ],
-                              ),
-                            ),
-                          ]),
-                    ),
-                  ),
-                  Image.asset('assets/Pollo.png'),
-                ])
-                /* child: Column(
-                children: [
-                  Expanded(
-                      flex: 4,
-                      child: Container(child: Image.asset('assets/Pollo.png'))),
-                  Expanded(
-                    child: Container(
-                      color: colorfondo,
-                      child: Text('Pollo',
-                          style: TextStyle(
-                            color: colortexto,
-                            fontSize: 20,
-                          )),
-                    ),
-                  ),
-                  Expanded(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(child: Texto('400', 20)),
-                      Expanded(child: Texto('\$250', 20)),
-                    ],
-                  )),
-                ],
-              ),*/
-                ),
+    return Container(
+      height: 240,
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+          side: MaterialStateProperty.all(BorderSide(
+              color: Color.fromARGB(255, 255, 255, 255),
+              width: 4,
+              style: BorderStyle.solid)),
+          elevation: MaterialStateProperty.all(10),
+          backgroundColor:
+              MaterialStateProperty.all(Color.fromARGB(255, 148, 255, 214)),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
           ),
         ),
-      ],
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: Container(
+                    child: Image.asset(
+                      'assets/Pollo.png',
+                      scale: 1,
+                    ),
+                  )),
+              Expanded(
+                child: FittedBox(
+                  child: Center(
+                    child: Text('ensalada de pollo',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: colortexto,
+                            fontSize: 40,
+                            fontStyle: FontStyle.italic)),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(child: Center(child: Texto('\$250', 20))),
+                  ],
+                ),
+              ),
+            ]),
+      ),
     );
   }
 }
