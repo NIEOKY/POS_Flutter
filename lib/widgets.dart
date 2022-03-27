@@ -378,28 +378,22 @@ class _ItemInventarioState extends State<ItemInventario> {
 }
 
 class CuentaItem extends ConsumerWidget {
-  const CuentaItem({Key? key}) : super(key: key);
+  CuentaItem({Key? key}) : super(key: key);
 
   @override
+  final ButtonStyle estilodeboton = ElevatedButton.styleFrom(
+    primary: Colors.white,
+    onPrimary: colorprimario,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    padding: EdgeInsets.all(10),
+    textStyle: TextStyle(color: Colors.white),
+  );
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       height: 240,
       child: ElevatedButton(
         onPressed: () {},
-        style: ButtonStyle(
-          side: MaterialStateProperty.all(BorderSide(
-              color: Color.fromARGB(255, 255, 255, 255),
-              width: 4,
-              style: BorderStyle.solid)),
-          elevation: MaterialStateProperty.all(10),
-          backgroundColor:
-              MaterialStateProperty.all(Color.fromARGB(255, 148, 255, 214)),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-        ),
+        style: estilodeboton,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,

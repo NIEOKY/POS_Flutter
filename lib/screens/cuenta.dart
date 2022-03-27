@@ -13,56 +13,72 @@ class CuentaScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+        backgroundColor: colorprimario,
         body: Column(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Flexible(
-                  flex: 1,
-                  child: EspacioDeTexto("buscar", colorprimario, null)),
-              SizedBox(width: 20),
-              Flexible(
-                  flex: 2,
-                  child: Boton("buscar", () {}, 200, 60, 30, colorprimario)),
-              SizedBox(width: 20),
-              Flexible(
-                  flex: 1,
-                  child: Boton("añadir", () {}, 200, 60, 30, colorprimario)),
-            ],
-          ),
-        ),
-        SizedBox(height: 10),
-        Expanded(
-          flex: 20,
-          child: Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: ResponsiveGridList(
-                    desiredItemWidth: 200,
-                    minSpacing: 10,
-                    children: [
-                      CuentaItem(),
-                      CuentaItem(),
-                      CuentaItem(),
-                      CuentaItem(),
-                      CuentaItem(),
-                      CuentaItem(),
-                      CuentaItem()
-                    ]),
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                padding: EdgeInsets.all(8),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Flexible(
+                        flex: 1,
+                        child: EspacioDeTexto("buscar", colorprimario, null)),
+                    SizedBox(width: 20),
+                    Flexible(
+                        flex: 2,
+                        child:
+                            Boton("buscar", () {}, 200, 60, 30, colorprimario)),
+                    SizedBox(width: 20),
+                    Flexible(
+                        flex: 1,
+                        child:
+                            Boton("añadir", () {}, 200, 60, 30, colorprimario)),
+                  ],
+                ),
               ),
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: colorprimario,
-                  ))
-            ],
-          ),
-        ),
-      ],
-    ));
+            ),
+            Expanded(
+              flex: 20,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ResponsiveGridList(
+                          desiredItemWidth: 200,
+                          minSpacing: 10,
+                          children: [
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                            CuentaItem(),
+                          ]),
+                    ),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Colors.white,
+                      ))
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
