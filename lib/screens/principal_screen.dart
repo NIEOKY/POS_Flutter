@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:point_of_sale/Provider.dart';
+import 'package:point_of_sale/providers.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/widgets.dart';
 import 'package:point_of_sale/screens/start_screen.dart';

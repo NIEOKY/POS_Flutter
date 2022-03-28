@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:point_of_sale/Provider.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/widgets.dart';
 import 'package:point_of_sale/screens/start_screen.dart';
@@ -12,6 +11,7 @@ class CuentaScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String buscar = '';
     return Scaffold(
         backgroundColor: colorprimario,
         body: Column(
@@ -26,7 +26,11 @@ class CuentaScreen extends ConsumerWidget {
                   children: [
                     Flexible(
                         flex: 1,
-                        child: EspacioDeTexto("buscar", colorprimario, null)),
+                        child: EspacioDeTexto(
+                          "buscar",
+                          colorprimario,
+                          null,
+                        )),
                     SizedBox(width: 20),
                     Flexible(
                         flex: 2,

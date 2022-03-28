@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:point_of_sale/clases/product.dart';
 import 'package:point_of_sale/constants.dart';
-import 'package:point_of_sale/screens/start_screen.dart';
-import 'package:point_of_sale/Provider.dart';
-import 'package:responsive_grid/responsive_grid.dart';
+import 'package:point_of_sale/database/inventoryproduct.dart';
+import 'package:point_of_sale/providers.dart';
+import 'package:point_of_sale/screens/principal_screen.dart';
 
 class Texto extends StatelessWidget {
   final double textsize;
@@ -79,7 +79,8 @@ class _BotonState extends State<Boton> {
 }
 
 class EspacioDeTexto extends StatefulWidget {
-  final String texto;
+  late String texto;
+  void Function(String)? onChanged;
   Color? color;
   IconData? icon;
   double? wid;
@@ -90,12 +91,16 @@ class EspacioDeTexto extends StatefulWidget {
   EspacioDeTexto.widfont(this.texto, this.color, this.font, this.wid,
       {Key? key})
       : super(key: key);
+  EspacioDeTexto.onChanged(this.texto, this.color, this.icon, this.onChanged,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<EspacioDeTexto> createState() => _EspacioDeTextoState();
 }
 
 class _EspacioDeTextoState extends State<EspacioDeTexto> {
+  final textcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     widget.color = widget.color ?? colortexto;
@@ -111,6 +116,8 @@ class _EspacioDeTextoState extends State<EspacioDeTexto> {
                 ThemeData().colorScheme.copyWith(primary: colorprimario),
           ),
           child: TextField(
+            controller: textcontroller,
+            onChanged: widget.onChanged,
             style: TextStyle(
               color: colortexto,
               fontSize: widget.font ?? 20,
@@ -149,6 +156,8 @@ class _EspacioDeTextoState extends State<EspacioDeTexto> {
       ),
     );
   }
+  //make a function that will save the data in the variable textovalor and then return it
+
 }
 
 class IconBoton extends StatefulWidget {
@@ -219,7 +228,7 @@ class Sidebar extends ConsumerWidget {
               flex: 1,
               child: FittedBox(
                 child: Boton.icono("Resumen", () {
-                  ref.read(indexprovider.notifier).state = 0;
+                  ref.read(indexprovider.state).state = 0;
                 }, 300, 80, 40, null, Icons.home),
               ),
             ),
@@ -230,7 +239,7 @@ class Sidebar extends ConsumerWidget {
               flex: 1,
               child: FittedBox(
                 child: Boton.icono("Cuenta", () {
-                  ref.read(indexprovider.notifier).state = 1;
+                  ref.read(indexprovider.state).state = 1;
                 }, 300, 80, 40, null, Icons.shopping_cart),
               ),
             ),
@@ -241,7 +250,7 @@ class Sidebar extends ConsumerWidget {
               flex: 1,
               child: FittedBox(
                 child: Boton.icono("Inventario", () {
-                  ref.read(indexprovider.notifier).state = 2;
+                  ref.read(indexprovider.state).state = 2;
                 }, 300, 80, 40, null, Icons.inventory),
               ),
             ),
@@ -252,7 +261,7 @@ class Sidebar extends ConsumerWidget {
               flex: 1,
               child: FittedBox(
                 child: Boton.icono("ventas", () {
-                  ref.read(indexprovider.notifier).state = 3;
+                  ref.read(indexprovider.state).state = 3;
                 }, 300, 80, 40, null, Icons.sell_rounded),
               ),
             ),
@@ -281,22 +290,19 @@ class Sidebar extends ConsumerWidget {
   }
 }
 
-class ItemInventario extends StatefulWidget {
-  String? nombre;
-  int? cantidad;
-  double? precio;
-  Function? onPressed;
-  ItemInventario(this.nombre, this.cantidad, this.precio, this.onPressed,
-      {Key? key})
+class ItemInventario extends ConsumerWidget {
+  int id;
+  String nombre;
+  double cantidad;
+  double precio;
+
+  ItemInventario(this.nombre, this.cantidad, this.precio, this.id, {Key? key})
       : super(key: key);
-
   @override
-  State<ItemInventario> createState() => _ItemInventarioState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Box box = Hive.box<InventoryProduct>("products");
+    double cantidadausar = 0;
 
-class _ItemInventarioState extends State<ItemInventario> {
-  @override
-  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -307,25 +313,34 @@ class _ItemInventarioState extends State<ItemInventario> {
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.only(left: 40),
-                child: Expanded(
-                  child: Texto('${widget.nombre}', 20),
-                  flex: 1,
-                ),
+                child: Texto('$nombre', 20),
               ),
             ),
             Expanded(
-              child: Texto('${widget.cantidad}', 20),
+              child: Texto('$cantidad', 20),
               flex: 1,
             ),
             Expanded(
-              child: Texto('\$ ${widget.precio}', 20),
+              child: Texto('\$ $precio', 20),
               flex: 1,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    box.putAt(
+                        id,
+                        InventoryProduct(
+                            name: nombre,
+                            price: precio,
+                            quantity: cantidad - cantidadausar));
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PrincipalScreen()));
+                  },
                   icon: Icon(Icons.remove_circle_outline),
                   color: Colors.red,
                   iconSize: 40,
@@ -336,6 +351,7 @@ class _ItemInventarioState extends State<ItemInventario> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: TextField(
+                      onChanged: (value) => cantidadausar = double.parse(value),
                       style: TextStyle(
                         color: colortexto,
                         fontSize: 20,
@@ -351,9 +367,21 @@ class _ItemInventarioState extends State<ItemInventario> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 20),
-                  child: Icon(
-                    Icons.add_circle_outline_rounded,
-                    size: 40,
+                  child: IconButton(
+                    icon: Icon(Icons.add_circle_outline),
+                    onPressed: () {
+                      box.putAt(
+                          id,
+                          InventoryProduct(
+                              name: nombre,
+                              price: precio,
+                              quantity: cantidad + cantidadausar));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PrincipalScreen()));
+                    },
+                    iconSize: 40,
                     color: Colors.green[900],
                   ),
                 ),
