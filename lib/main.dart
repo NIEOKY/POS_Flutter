@@ -14,7 +14,8 @@ Future<void> main() async {
   Hive.registerAdapter(InventoryProductAdapter());
   await Hive.openBox<InventoryProduct>('products');
   await Hive.openBox<User>('users');
-
+  Box box = Hive.box<InventoryProduct>('products');
+  //box.deleteFromDisk();
   runApp(ProviderScope(child: const MyApp()));
 }
 

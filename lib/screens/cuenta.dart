@@ -54,24 +54,7 @@ class CuentaScreen extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ResponsiveGridList(
-                          desiredItemWidth: 200,
-                          minSpacing: 10,
-                          children: [
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                            CuentaItem(),
-                          ]),
+                          desiredItemWidth: 200, minSpacing: 10, children: []),
                     ),
                   ),
                   Expanded(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:point_of_sale/providers.dart';
 import 'package:point_of_sale/constants.dart';
@@ -15,15 +14,33 @@ class InventoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    itemsproviders.clear();
     late Box box = Hive.box<InventoryProduct>("products");
     final products = box.values.toList();
-
-    updateProvider(ref);
-    final inventario = ref.watch(inventoryproductprovider.state);
+    ref.read(indexinventoryproductprovider.state).state = products.length;
+    for (var product in products) {
+      itemsproviders.add(StateProvider((ref) => product.quantity));
+    }
 
     String nombre = "";
     double precio = 0;
     double cantidad = 0;
+    final listtvieww = ListView.builder(
+      shrinkWrap: true,
+      controller: ScrollController(),
+      itemCount: ref.watch(indexinventoryproductprovider.state).state,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: ItemInventario(
+              box.getAt(index).name,
+              box.getAt(index).price,
+              //box.getAt(index).quantity,
+              ref.watch(itemsproviders[index].state).state,
+              index,
+            ));
+      },
+    );
 
     String buscar = "";
     return Container(
@@ -106,16 +123,17 @@ class InventoryScreen extends ConsumerWidget {
                                         colorprimario)),
                                 child: Text("Añadir"),
                                 onPressed: () {
-                                  addProduct(nombre, cantidad, precio, ref);
+                                  addProduct(nombre, precio, cantidad, ref);
+                                  ref
+                                      .read(indexinventoryproductprovider.state)
+                                      .state = box.length;
+                                  itemsproviders
+                                      .add(StateProvider(((ref) => 0)));
 
                                   Navigator.of(context).pop();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PrincipalScreen()));
+
                                   //update the provider
-                                  updateProvider(ref);
+
                                   //enter inventory screen again for refresh
                                 },
                               ),
@@ -162,21 +180,7 @@ class InventoryScreen extends ConsumerWidget {
           ),
           Expanded(
             flex: 100,
-            child: ListView.builder(
-              shrinkWrap: true,
-              controller: ScrollController(),
-              itemCount: products.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: ItemInventario(
-                      box.getAt(index).name,
-                      box.getAt(index).quantity,
-                      box.getAt(index).price,
-                      index,
-                    ));
-              },
-            ),
+            child: listtvieww,
           )
         ],
       ),
@@ -185,34 +189,23 @@ class InventoryScreen extends ConsumerWidget {
 
   //create a function to add a new product to the database and update the list of products also check if the product already exists in the database and if it does update the quantity and price of the product
   Future addProduct(
-      String nombre, double cantidad, double precio, WidgetRef ref) async {
+      String nombre, double precio, double cantidad, WidgetRef ref) async {
     bool exist = false;
     final Box box = Hive.box<InventoryProduct>("products");
     final products = box.values.toList();
     for (var product in products) {
       //change the data of the product if it already exists in the database
-      if (product.name == nombre) {}
+      if (product.name == nombre) {
+        exist = true;
+      }
     }
     if (!exist) {
       final product = InventoryProduct(
         name: nombre,
-        quantity: cantidad,
         price: precio,
+        quantity: cantidad,
       );
       box.add(product);
-      updateProvider(ref);
-    }
-  }
-
-  Future updateProvider(
-    WidgetRef ref,
-  ) async {
-    final box = Hive.box<InventoryProduct>('products');
-    final products = box.values.toList();
-    // clean the provider and fill it with the new products
-    ref.read(inventoryproductprovider).clear();
-    for (var product in products) {
-      ref.read(inventoryproductprovider).add(product);
     }
   }
 }

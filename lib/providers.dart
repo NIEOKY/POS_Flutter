@@ -6,11 +6,14 @@ final indexprovider = StateProvider<int>((ref) {
   int counter = 0;
   return counter;
 });
-final inventoryproductprovider = StateProvider<List<InventoryProduct>>((ref) {
-  List<InventoryProduct> products = [];
-  return products;
+
+final indexinventoryproductprovider = StateProvider<int>((ref) {
+  int counter = 0;
+  return counter;
 });
 final lengthprovider = StateProvider<int>((ref) {
   int counter = 0;
   return counter;
 });
+
+final List<StateProvider<double>> itemsproviders = [];

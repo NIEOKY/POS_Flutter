@@ -47,7 +47,9 @@ class _HomePageState extends State<HomePage> {
               }),
               const SizedBox(height: 40),
               Boton.icono('Iniciar Sesión', () {
-                checkUser(username, password, context);
+                if (username != "" && password != "") {
+                  checkUser(username, password, context);
+                }
               }, 300, 60, 30, null, Icons.arrow_forward),
               const SizedBox(height: 40),
               Texto("¿No tienes un usuario?", 20),
@@ -92,20 +94,22 @@ class _HomePageState extends State<HomePage> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text(' EL usuario no existe'),
+              title: Center(child: Text(' EL usuario no existe')),
               actions: <Widget>[
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(colorprimario)),
-                  child: Text('Aceptar',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white)),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                Center(
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(colorprimario)),
+                    child: Text('Aceptar',
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 )
               ],
             );

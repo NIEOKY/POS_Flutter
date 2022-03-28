@@ -46,7 +46,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             height: 20,
           ),
           Boton("Registrar", () {
-            addUser(name, username, password, context);
+            //make a if to check is the parameters are empty
+            if (name != "" && username != "" && password != "") {
+              addUser(name, username, password, context);
+            }
           }, 300, 60, 30, null),
           SizedBox(
             height: 30,
@@ -95,15 +98,18 @@ Future addUser(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Usuario ya existe"),
+            title: Center(child: Text("Usuario ya existe")),
             actions: [
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(colorprimario)),
-                child: Text("Aceptar"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+              Center(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(colorprimario)),
+                  child: Text("Aceptar"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               )
             ],
           );

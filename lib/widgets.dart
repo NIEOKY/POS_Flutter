@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:point_of_sale/clases/product.dart';
 import 'package:point_of_sale/constants.dart';
@@ -296,11 +297,12 @@ class ItemInventario extends ConsumerWidget {
   double cantidad;
   double precio;
 
-  ItemInventario(this.nombre, this.cantidad, this.precio, this.id, {Key? key})
+  ItemInventario(this.nombre, this.precio, this.cantidad, this.id, {Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Box box = Hive.box<InventoryProduct>("products");
+    late Box box = Hive.box<InventoryProduct>("products");
+
     double cantidadausar = 0;
 
     return Padding(
@@ -310,19 +312,48 @@ class ItemInventario extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              flex: 3,
+                flex: 1,
+                child: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      // make a alert dialog to confirm if you want to delete the product
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Eliminar"),
+                            content:
+                                Text("¿Está seguro de eliminar el producto?"),
+                            actions: [
+                              ElevatedButton(
+                                child: Text("Cancelar"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              ElevatedButton(
+                                child: Text("Eliminar"),
+                                onPressed: () {},
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    })),
+            Expanded(
+              flex: 6,
               child: Padding(
                 padding: const EdgeInsets.only(left: 40),
                 child: Texto('$nombre', 20),
               ),
             ),
             Expanded(
-              child: Texto('$cantidad', 20),
-              flex: 1,
+              child: Texto('${cantidad}', 20),
+              flex: 2,
             ),
             Expanded(
               child: Texto('\$ $precio', 20),
-              flex: 1,
+              flex: 2,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -335,11 +366,8 @@ class ItemInventario extends ConsumerWidget {
                             name: nombre,
                             price: precio,
                             quantity: cantidad - cantidadausar));
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PrincipalScreen()));
+                    ref.read(itemsproviders[id].state).state =
+                        cantidad - cantidadausar;
                   },
                   icon: Icon(Icons.remove_circle_outline),
                   color: Colors.red,
@@ -376,10 +404,8 @@ class ItemInventario extends ConsumerWidget {
                               name: nombre,
                               price: precio,
                               quantity: cantidad + cantidadausar));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PrincipalScreen()));
+                      ref.read(itemsproviders[id].state).state =
+                          cantidad + cantidadausar;
                     },
                     iconSize: 40,
                     color: Colors.green[900],
