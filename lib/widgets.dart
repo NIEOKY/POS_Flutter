@@ -292,6 +292,7 @@ class Sidebar extends ConsumerWidget {
 }
 
 class ItemInventario extends ConsumerWidget {
+  var txt = TextEditingController();
   int id;
   String nombre;
   double cantidad;
@@ -326,14 +327,26 @@ class ItemInventario extends ConsumerWidget {
                                 Text("¿Está seguro de eliminar el producto?"),
                             actions: [
                               ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        colorprimario)),
                                 child: Text("Cancelar"),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                               ),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        colorprimario)),
                                 child: Text("Eliminar"),
-                                onPressed: () {},
+                                onPressed: () {
+                                  box.deleteAt(id);
+                                  ref
+                                      .read(indexinventoryproductprovider.state)
+                                      .state--;
+                                  Navigator.pop(context);
+                                },
                               ),
                             ],
                           );
@@ -360,14 +373,22 @@ class ItemInventario extends ConsumerWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    box.putAt(
-                        id,
-                        InventoryProduct(
-                            name: nombre,
-                            price: precio,
-                            quantity: cantidad - cantidadausar));
-                    ref.read(itemsproviders[id].state).state =
-                        cantidad - cantidadausar;
+                    if (cantidad - cantidadausar > 0) {
+                      box.putAt(
+                          id,
+                          InventoryProduct(
+                              name: nombre,
+                              price: precio,
+                              quantity: cantidad - cantidadausar));
+                      ref.read(itemsproviders[id].state).state =
+                          cantidad - cantidadausar;
+                    } else {
+                      box.putAt(
+                          id,
+                          InventoryProduct(
+                              name: nombre, price: precio, quantity: 0));
+                      ref.read(itemsproviders[id].state).state = 0;
+                    }
                   },
                   icon: Icon(Icons.remove_circle_outline),
                   color: Colors.red,
@@ -379,7 +400,10 @@ class ItemInventario extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: TextField(
-                      onChanged: (value) => cantidadausar = double.parse(value),
+                      controller: txt,
+                      onChanged: (value) {
+                        cantidadausar = double.parse(value);
+                      },
                       style: TextStyle(
                         color: colortexto,
                         fontSize: 20,

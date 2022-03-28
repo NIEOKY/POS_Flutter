@@ -11,6 +11,14 @@ class CuentaScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final listaobjetos = ListView.builder(
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 10),
+        );
+      },
+    );
     String buscar = '';
     return Scaffold(
         backgroundColor: colorprimario,

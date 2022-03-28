@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:point_of_sale/database/inventoryproduct.dart';
 import 'package:point_of_sale/providers.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/widgets.dart';
@@ -15,6 +17,7 @@ class PrincipalScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(indexprovider);
+
     switch (index) {
       case 0:
         return Scaffold(

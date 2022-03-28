@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:point_of_sale/clases/product.dart';
 import 'package:point_of_sale/providers.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/database/inventoryproduct.dart';
@@ -17,7 +19,7 @@ class InventoryScreen extends ConsumerWidget {
     itemsproviders.clear();
     late Box box = Hive.box<InventoryProduct>("products");
     final products = box.values.toList();
-    ref.read(indexinventoryproductprovider.state).state = products.length;
+
     for (var product in products) {
       itemsproviders.add(StateProvider((ref) => product.quantity));
     }
@@ -95,12 +97,23 @@ class InventoryScreen extends ConsumerWidget {
                                 ),
                                 Text("Cantidad"),
                                 TextField(
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp("[0-9,.]"),
+                                        replacementString: "")
+                                  ],
                                   onChanged: (value) {
                                     cantidad = double.parse(value);
                                   },
                                 ),
                                 Text("Precio"),
                                 TextField(
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp("[0-9,.]"),
+                                        replacementString: "")
+                                  ],
+                                  keyboardType: TextInputType.number,
                                   onChanged: (value) {
                                     precio = double.parse(value);
                                   },
@@ -124,6 +137,9 @@ class InventoryScreen extends ConsumerWidget {
                                 child: Text("Añadir"),
                                 onPressed: () {
                                   addProduct(nombre, precio, cantidad, ref);
+                                  ref
+                                      .read(indexinventoryproductprovider.state)
+                                      .state = box.length - 1;
                                   ref
                                       .read(indexinventoryproductprovider.state)
                                       .state = box.length;
@@ -193,10 +209,16 @@ class InventoryScreen extends ConsumerWidget {
     bool exist = false;
     final Box box = Hive.box<InventoryProduct>("products");
     final products = box.values.toList();
-    for (var product in products) {
+    for (var produc in products) {
       //change the data of the product if it already exists in the database
-      if (product.name == nombre) {
+      if (produc.name == nombre) {
         exist = true;
+        final product = InventoryProduct(
+          name: nombre,
+          price: precio,
+          quantity: cantidad,
+        );
+        box.putAt(products.indexOf(produc), product);
       }
     }
     if (!exist) {
