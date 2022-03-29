@@ -4,6 +4,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:point_of_sale/database/inventoryproduct.dart';
 import 'package:point_of_sale/widgets.dart';
 
+final indexCompoundProductProvider = StateProvider<int>((ref) {
+  int index = 0;
+  return index;
+});
 final indexprovider = StateProvider<int>((ref) {
   int counter = 0;
   return counter;

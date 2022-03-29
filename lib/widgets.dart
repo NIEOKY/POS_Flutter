@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:point_of_sale/clases/product.dart';
+import 'package:point_of_sale/database/product.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/database/inventoryproduct.dart';
 import 'package:point_of_sale/providers.dart';
@@ -456,7 +456,9 @@ class ItemInventario extends ConsumerWidget {
 }
 
 class CuentaItem extends ConsumerWidget {
-  CuentaItem({Key? key}) : super(key: key);
+  final String nombre;
+  final double precio;
+  CuentaItem(this.nombre, this.precio, {Key? key}) : super(key: key);
 
   @override
   final ButtonStyle estilodeboton = ElevatedButton.styleFrom(
@@ -487,7 +489,7 @@ class CuentaItem extends ConsumerWidget {
               Expanded(
                 child: FittedBox(
                   child: Center(
-                    child: Text('ensalada de pollo',
+                    child: Text(nombre.toString(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: colortexto,
@@ -499,7 +501,7 @@ class CuentaItem extends ConsumerWidget {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: Center(child: Texto('\$250', 20))),
+                    Expanded(child: Center(child: Texto('$precio', 20))),
                   ],
                 ),
               ),

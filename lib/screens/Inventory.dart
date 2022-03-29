@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:point_of_sale/clases/product.dart';
+import 'package:point_of_sale/database/product.dart';
 import 'package:point_of_sale/providers.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/database/inventoryproduct.dart';

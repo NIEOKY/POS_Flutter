@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:point_of_sale/database/user.dart';
 import 'package:point_of_sale/screens/start_screen.dart';
 import 'database/inventoryproduct.dart';
+import 'database/product.dart';
 import 'database/user.dart';
 import 'screens/start_screen.dart';
 import 'package:riverpod/riverpod.dart';
@@ -12,8 +13,11 @@ Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(InventoryProductAdapter());
+  Hive.registerAdapter(ProductAdapter());
   await Hive.openBox<InventoryProduct>('products');
   await Hive.openBox<User>('users');
+  await Hive.openBox<Product>('compoundproducts');
+
   Box box = Hive.box<InventoryProduct>('products');
   //box.deleteFromDisk();
   runApp(ProviderScope(child: const MyApp()));

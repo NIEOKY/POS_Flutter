@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:hive/hive.dart';
 import 'package:point_of_sale/constants.dart';
 import 'package:point_of_sale/widgets.dart';

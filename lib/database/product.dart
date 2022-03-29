@@ -3,7 +3,7 @@ import 'package:point_of_sale/database/inventoryproduct.dart';
 
 part 'product.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class Product {
   @HiveField(1)
   late String name;
@@ -11,4 +11,6 @@ class Product {
   late List<InventoryProduct> products;
   @HiveField(3)
   late List<int> productint;
+  @HiveField(4)
+  late double price;
 }

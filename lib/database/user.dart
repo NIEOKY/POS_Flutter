@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:point_of_sale/clases/cuenta.dart';
 
 part 'user.g.dart';
 
@@ -15,7 +16,7 @@ class User extends HiveObject {
   @HiveField(3)
   late bool isAdmin = false;
   @HiveField(4)
-  late List cuenta = [];
+  late List<Cuenta> cuenta = [];
 
   User({
     required this.name,
